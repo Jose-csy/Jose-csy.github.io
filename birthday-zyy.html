@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<!-- 没想到你竟然进到源码😿，有点意思😂，写的一坨，bug也挺多的，没来的及改了，随便划两下得了，给你提醒了🤪，🤪🤪🤪真划到底的话会电脑会爆炸🤯🤯💥💥💥💥💥， -->
+<!--  💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥 -->
+<!--  💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恭喜你进入21岁副本</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f0ff 0%, #fef7fb 100%);
+            font-family: "Comic Sans MS", "幼圆", "黑体", sans-serif;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        @keyframes fireworkBurst {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            60% {
+                transform: scale(5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(8);
+                opacity: 0;
+            }
+        }
+
+        .firework {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: fireworkBurst 3s infinite ease-in-out;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes petalFall {
+            0% {
+                transform: translateY(-10px) rotate(0deg) translateX(0);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateY(50vh) rotate(360deg) translateX(10px);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg) translateX(-10px);
+                opacity: 0;
+            }
+        }
+
+        .petal {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50% 0;
+            background: radial-gradient(circle, #ff6b9d 0%, #ff98b5 100%);
+            opacity: 0.8;
+            animation: petalFall 8s infinite linear;
+            z-index: 1;
+        }
+
+        .card-container {
+            position: relative;
+            z-index: 2;
+            perspective: 2000px;
+            overflow: hidden;
+            width: 420px;
+            height: 580px;
+        }
+
+        .birthday-card {
+            width: 420px;
+            height: 580px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+
+        .card-front, .card-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            overflow: hidden;
+            /* 新增：左右滑动过渡 */
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(0);
+        }
+
+        .question1-card, .question2-card, .question3-card, .final-img-card, .random-final-img-card {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #fdf7fb 0%, #f8eef6 100%);
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+        }
+
+        .random-question-card {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            background: linear-gradient(180deg, #fdf7fb 0%, #f8eef6 100%);
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            overflow: hidden;
+            transform: translateX(-100%);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 11;
+        }
+
+
+        .main-card-shift-right {
+            transform: translateX(100%);
+        }
+
+
+        .random-question-show {
+            transform: translateX(0);
+        }
+
+
+        .random-question-hide {
+            transform: translateX(100%);
+        }
+
+
+        .final-img-card.slide-in-left, .random-final-img-card.slide-in-left {
+            transform: translateX(0);
+            opacity: 1;
+
+        }
+
+        .card-slide-down {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .card-slide-up {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .card-front {
+            transform: rotateY(0deg);
+            background: linear-gradient(180deg, #fff 0%, #fef9fb 100%);
+            justify-content: center;
+            padding-top: 0;
+            z-index: 1;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(180deg, #f8f0f9 0%, #f5e6f3 100%);
+            z-index: 1;
+        }
+
+        .birthday-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .cake-wrapper {
+            position: relative;
+            margin-top: 20px; 
+            width: 160px; 
+            height: 160px; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .cake {
+            width: 160px;
+            height: 110px;
+            background: #ffd1dc;
+            border-radius: 8px 8px 40% 40%;
+            position: absolute;
+            bottom: 0;
+            box-shadow: inset 0 -8px 0 rgba(255, 107, 157, 0.1);
+        }
+
+        .cake::before {
+            content: "";
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 22px;
+            background: #ff6b9d;
+            border-radius: 12px;
+            box-shadow: inset 0 4px 0 rgba(255, 255, 255, 0.3);
+            z-index: 2;
+        }
+
+        .candle {
+            position: absolute;
+            top: 12px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 55px; 
+            background: #ffffff;
+            border-radius: 6px 6px 2px 2px;
+            box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+            z-index: 3;
+        }
+
+        @keyframes flameFlicker {
+            0% {
+                transform: translateX(-50%) scale(0.95) rotate(-1deg);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.05) rotate(1deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-50%) scale(0.95) rotate(-1deg);
+                opacity: 0.9;
+            }
+        }
+
+        .flame {
+            position: absolute;
+            top: 7px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 28px;
+            background: radial-gradient(circle, #ffeb3b 0%, #ff9800 100%);
+            border-radius: 50% 50% 20% 20%;
+            animation: flameFlicker 1.2s infinite ease-in-out;
+            box-shadow: 0 0 12px rgba(255, 152, 0, 0.6);
+            z-index: 4; 
+        }
+
+        .front-title {
+            font-size: 42px;
+            color: #ff4d88;
+            margin-bottom: 0;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(255, 77, 136, 0.2);
+            font-family: "Comic Sans MS", "华康俪金黑", "幼圆", sans-serif;
+        }
+
+        .front-tip {
+            display: none;
+        }
+
+        .back-title {
+            font-size: 30px; 
+            color: #ff4d88;
+            margin-bottom: 25px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-align: center;
+            font-family: "Comic Sans MS", "华康少女文字", "幼圆", sans-serif;
+        }
+
+        .blessing-area {
+            width: 100%;
+            min-height: 220px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            font-family: "Comic Sans MS", "汉仪圆叠体", "幼圆", sans-serif;
+            font-size: 24px; 
+            line-height: 2.2;
+            color: #333333;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+            word-wrap: break-word;
+            transform: rotate(-0.5deg);
+        }
+
+        .signature {
+            width: 100%;
+            text-align: right;
+            margin-top: 25px;
+            font-family: "Comic Sans MS", "华康娃娃体", "幼圆", sans-serif;
+            font-size: 22px; 
+            color: #ff4d88;
+            letter-spacing: 1px;
+            transform: rotate(1deg);
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ff4d88;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 136, 0.3);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            background: #ff3377;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #ff4d88;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 136, 0.3);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+            background: #ff3377;
+        }
+
+        .hidden-source-btn {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 50px;
+            opacity: 0;
+            z-index: 99;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .question-title {
+            font-size: 28px;
+            color: #ff4d88;
+            margin-bottom: 40px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .answer-input {
+            width: 80%;
+            height: 50px;
+            padding: 0 15px;
+            border: 2px solid #ff98b5;
+            border-radius: 25px;
+            font-size: 20px;
+            color: #333;
+            outline: none;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .answer-input:focus {
+            border-color: #ff4d88;
+            box-shadow: 0 0 10px rgba(255, 77, 136, 0.2);
+        }
+
+        .submit-btn {
+            width: 120px;
+            height: 45px;
+            background: #ff4d88;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #ff3377;
+            transform: scale(1.05);
+        }
+
+        .error-tip {
+            color: #f44336;
+            font-size: 16px;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-tip.show {
+            opacity: 1;
+        }
+
+
+        .countdown-tip {
+            display: none; 
+        }
+
+        .final-img, .random-final-img {
+            width: 100%;
+            height: 80%;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .final-title, .random-final-title {
+            font-size: 26px;
+            color: #ff4d88;
+            margin-top: 20px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 480px) {
+            .card-container, .birthday-card {
+                width: 90vw;
+                height: 520px;
+            }
+
+            .front-title {
+                font-size: 36px;
+                letter-spacing: 2px;
+            }
+
+            .back-title {
+                font-size: 26px;
+            }
+
+            .blessing-area {
+                font-size: 20px;
+                line-height: 2;
+                min-height: 180px;
+                padding: 20px;
+                transform: rotate(-0.3deg);
+            }
+
+            .signature {
+                font-size: 18px;
+                transform: rotate(0.8deg);
+            }
+
+            .music-control {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .back-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+                top: 20px;
+                left: 20px;
+            }
+
+            .hidden-source-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .cake-wrapper {
+                width: 140px;
+                height: 140px;
+            }
+
+            .cake {
+                width: 140px;
+                height: 100px;
+            }
+
+            .candle {
+                height: 50px;
+                top: 10px;
+            }
+
+            .flame {
+                top: 5px;
+            }
+
+            .question-title {
+                font-size: 24px;
+                margin-bottom: 30px;
+            }
+
+            .answer-input {
+                height: 45px;
+                font-size: 18px;
+            }
+
+            .submit-btn {
+                width: 100px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .final-title, .random-final-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="fireworkContainer"></div>
+    <div id="petalContainer"></div>
+
+    <div class="back-btn" id="backBtn">⬅️</div>
+
+    <button class="hidden-source-btn" id="hiddenSourceBtn"></button>
+
+    <div class="card-container">
+        <div class="birthday-card" id="birthdayCard">
+
+            <div class="card-front" id="mainCardFront">
+                <h1 class="front-title">🌸张雅怡✨<br>生日快乐🎂</h1>
+                <div class="cake-wrapper">
+                    <div class="cake"></div>
+                    <div class="candle"></div> 
+                    <div class="flame"></div>
+                </div>
+            </div>
+
+
+            <div class="card-back" id="mainCardBack">
+                <h2 class="back-title">致我滴老同桌🥳</h2>
+                <div class="blessing-area">
+                    1月1日🎂恭喜进入21岁副本<br>
+                    希望你永远能：<br>
+                    平安喜乐，万事顺意，<br>
+                    眼里有光，心中有暖，<br>
+                    每一岁都奔走在热爱里，<br>
+                    生日快乐❤️ 且 新年快乐🎇
+                </div>
+                <div class="signature">
+                    —— 母鸡要咋写😣
+                </div>
+            </div>
+
+
+            <div class="question1-card" id="question1Card">
+                <h2 class="question-title">我的高三班主任是</h2>
+                <input type="text" class="answer-input" id="answer1Input" placeholder="请输入姓名">
+                <div class="error-tip" id="error1Tip">请重新输入</div>
+                <button class="submit-btn" id="submit1Btn">提交答案</button>
+            </div>
+
+            <div class="question2-card" id="question2Card">
+                <h2 class="question-title">23届五中高三5班人数</h2>
+                <input type="text" class="answer-input" id="answer2Input" placeholder="请输入数字">
+                <div class="error-tip" id="error2Tip">请重新输入</div>
+                <button class="submit-btn" id="submit2Btn">提交答案</button>
+            </div>
+
+            <div class="question3-card" id="question3Card">
+                <h2 class="question-title">请输入密码</h2>
+                <input type="text" class="answer-input" id="answer3Input" placeholder="你年份新农历生日数字">
+                <div class="error-tip" id="error3Tip">请重新输入</div>
+                <button class="submit-btn" id="submit3Btn">提交答案</button>
+            </div>
+
+
+            <div class="final-img-card" id="finalImgCard">
+                <img src="https://raw.githubusercontent.com/Jose-csy/Jose-csy.github.io/main/xiayan.jpg" alt="3题答对专属图片" class="final-img">
+                <h3 class="final-title">夏彦的祝福✨</h3>
+            </div>
+
+
+            <div class="random-final-img-card" id="randomFinalImgCard">
+                <img src="" alt="随机题答对专属图片" class="random-final-img"> <!-- src留空，JS动态赋值 -->
+                <h3 class="random-final-title">神的神秘祝福✨<br>5s查看</h3>
+            </div>
+
+
+            <div class="random-question-card" id="randomQuestionCard">
+                <div class="countdown-tip" id="countdownTip"></div>
+                <h2 class="question-title" id="randomQTitle">请回答问题</h2>
+                <input type="text" class="answer-input" id="randomAnsInput" placeholder="请输入答案">
+                <div class="error-tip" id="randomErrTip">回答错误</div>
+                <button class="submit-btn" id="randomSubmitBtn">提交答案</button>
+            </div>
+        </div>
+    </div>
+
+
+    <audio id="bgm" src="https://music.163.com/song/media/outer/url?id=1456890009.mp3" loop preload="auto" autoplay></audio>
+    <div class="music-control" id="musicBtn">🎵</div> 
+
+    <script>
+        const birthdayCard = document.getElementById('birthdayCard');
+        const mainCardFront = document.getElementById('mainCardFront');
+        const mainCardBack = document.getElementById('mainCardBack');
+        const hiddenSourceBtn = document.getElementById('hiddenSourceBtn');
+        const randomQuestionCard = document.getElementById('randomQuestionCard');
+        const randomQTitle = document.getElementById('randomQTitle');
+        const randomAnsInput = document.getElementById('randomAnsInput');
+        const randomErrTip = document.getElementById('randomErrTip');
+        const randomSubmitBtn = document.getElementById('randomSubmitBtn');
+        const finalImgCard = document.getElementById('finalImgCard'); // 图片A（1张固定）
+        const randomFinalImgCard = document.getElementById('randomFinalImgCard'); // 图片B模块（2张随机）
+        const randomFinalImgElem = document.querySelector('.random-final-img'); // 图片B模块的img标签
+        let isFlipped = false;
+        let currentCardType = 'default';
+
+
+        const randomImgBList = [
+            "https://raw.githubusercontent.com/Jose-csy/Jose-csy.github.io/main/suijitow.jpg", // 第2张图：图片B1
+            "https://raw.githubusercontent.com/Jose-csy/Jose-csy.github.io/main/suijione.jpg"  // 第3张图：图片B2（与A、B1都不同）
+        ];
+
+
+        const cardList = [
+            { key: 'question1', elem: document.getElementById('question1Card') },
+            { key: 'question2', elem: document.getElementById('question2Card') },
+            { key: 'question3', elem: document.getElementById('question3Card') },
+            { key: 'final', elem: document.getElementById('finalImgCard') }
+        ];
+        const questionAndFinalCards = {
+            question1: document.getElementById('question1Card'),
+            question2: document.getElementById('question2Card'),
+            question3: document.getElementById('question3Card'),
+            final: document.getElementById('finalImgCard')
+        };
+        const backBtn = document.getElementById('backBtn');
+        const answer1Input = document.getElementById('answer1Input');
+        const error1Tip = document.getElementById('error1Tip');
+        const submit1Btn = document.getElementById('submit1Btn');
+        const answer2Input = document.getElementById('answer2Input');
+        const error2Tip = document.getElementById('error2Tip');
+        const submit2Btn = document.getElementById('submit2Btn');
+        const answer3Input = document.getElementById('answer3Input');
+        const error3Tip = document.getElementById('error3Tip');
+        const submit3Btn = document.getElementById('submit3Btn');
+
+
+        const randomQuestionList = [
+            {
+                title: "老同桌农历生日(5s)",
+                correctAns: "2004925",
+                isTimed: true 
+            },
+            {
+                title: "国庆我在哪家吃烤肉(5s)",
+                correctAns: "川釜烤肉",
+                isTimed: true
+            },
+            {
+                title: "高中朕旷晚自习看啥电影(5s)",
+                correctAns: "铃芽之旅",
+                isTimed: true 
+            }
+        ];
+        let currentRandomQ = null;
+        let questionCountdownTimer = null; 
+        let finalCardCountdownTimer = null; 
+        let randomFinalCardCountdownTimer = null; 
+
+        birthdayCard.addEventListener('click', () => {
+            if (currentCardType === 'default' && !randomQuestionCard.classList.contains('random-question-show') && !finalImgCard.classList.contains('slide-in-left') && !randomFinalImgCard.classList.contains('slide-in-left')) {
+                isFlipped = !isFlipped;
+                if (isFlipped) {
+                    birthdayCard.classList.add('flipped');
+                } else {
+                    birthdayCard.classList.remove('flipped');
+                }
+            }
+        });
+
+
+        hiddenSourceBtn.addEventListener('click', function() {
+
+            if (randomQuestionCard.classList.contains('random-question-show') || finalImgCard.classList.contains('slide-in-left') || randomFinalImgCard.classList.contains('slide-in-left')) {
+                return;
+            }
+
+
+            resetAllCardState();
+
+
+            const randomIndex = Math.floor(Math.random() * randomQuestionList.length);
+            currentRandomQ = randomQuestionList[randomIndex];
+
+
+            randomQTitle.textContent = currentRandomQ.title;
+            randomAnsInput.value = '';
+            randomErrTip.classList.remove('show');
+
+
+            startQuestion5sHiddenCountdown();
+
+
+            mainCardFront.classList.add('main-card-shift-right');
+            mainCardBack.classList.add('main-card-shift-right');
+            randomQuestionCard.classList.add('random-question-show');
+        });
+
+
+        function startQuestion5sHiddenCountdown() {
+
+            if (questionCountdownTimer) {
+                clearTimeout(questionCountdownTimer);
+            }
+
+            questionCountdownTimer = setTimeout(() => {
+                randomErrTip.classList.remove('show'); 
+                resetToHomePage();
+            }, 5000); 
+        }
+
+
+        randomSubmitBtn.addEventListener('click', function() {
+            if (!currentRandomQ) return;
+
+            const userAns = randomAnsInput.value.trim();
+ 
+            if (userAns === currentRandomQ.correctAns) {
+
+                clearTimeout(questionCountdownTimer);
+                questionCountdownTimer = null;
+
+                const randomImgIndex = Math.floor(Math.random() * randomImgBList.length); 
+                const targetImgSrc = randomImgBList[randomImgIndex]; 
+                randomFinalImgElem.src = targetImgSrc; 
+
+
+                randomQuestionCard.classList.remove('random-question-show');
+                randomQuestionCard.classList.add('random-question-hide');
+                randomFinalImgCard.classList.add('slide-in-left');
+
+ 
+                startRandomFinal3sHiddenCountdown();
+            } else {
+  
+                randomErrTip.classList.add('show');
+                clearTimeout(questionCountdownTimer);
+                questionCountdownTimer = null;
+                setTimeout(() => {
+                    resetToHomePage();
+                }, 500);
+            }
+        });
+
+  
+        function startFinal3sHiddenCountdown() {
+
+            if (finalCardCountdownTimer) {
+                clearTimeout(finalCardCountdownTimer);
+            }
+
+            finalCardCountdownTimer = setTimeout(() => {
+                resetToHomePage();
+            }, 5000); 
+        }
+
+
+        function startRandomFinal3sHiddenCountdown() {
+
+            if (randomFinalCardCountdownTimer) {
+                clearTimeout(randomFinalCardCountdownTimer);
+            }
+   
+            randomFinalCardCountdownTimer = setTimeout(() => {
+                resetToHomePage();
+            }, 5000); 
+        }
+
+
+        function resetToHomePage() {
+            resetAllCardState();
+
+            birthdayCard.classList.remove('flipped');
+            isFlipped = false;
+            randomAnsInput.value = '';
+        }
+
+
+        function resetAllCardState() {
+
+            clearTimeout(questionCountdownTimer);
+            clearTimeout(finalCardCountdownTimer);
+            clearTimeout(randomFinalCardCountdownTimer);
+            questionCountdownTimer = null;
+            finalCardCountdownTimer = null;
+            randomFinalCardCountdownTimer = null;
+
+ 
+            randomErrTip.classList.remove('show');
+            randomQuestionCard.classList.remove('random-question-show', 'random-question-hide');
+            finalImgCard.classList.remove('slide-in-left'); 
+            randomFinalImgCard.classList.remove('slide-in-left'); 
+            mainCardFront.classList.remove('main-card-shift-right');
+            mainCardBack.classList.remove('main-card-shift-right');
+            currentRandomQ = null;
+
+            randomFinalImgElem.src = '';
+        }
+
+
+        function hideAllQuestionAndFinalCards() {
+            cardList.forEach(item => {
+                item.elem.classList.remove('card-slide-down');
+                item.elem.classList.add('card-slide-up');
+            });
+            document.querySelector('.card-front').style.display = 'flex';
+            document.querySelector('.card-back').style.display = 'flex';
+            birthdayCard.classList.remove('flipped');
+            isFlipped = false;
+            currentCardType = 'default';
+        }
+
+        function slideDownCard(targetKey) {
+            if (currentCardType !== 'default') {
+                questionAndFinalCards[currentCardType].classList.remove('card-slide-down');
+                questionAndFinalCards[currentCardType].classList.add('card-slide-up');
+            }
+            document.querySelector('.card-front').style.display = 'none';
+            document.querySelector('.card-back').style.display = 'none';
+            const targetCard = questionAndFinalCards[targetKey];
+            targetCard.classList.remove('card-slide-up');
+            targetCard.classList.add('card-slide-down');
+            currentCardType = targetKey;
+            resetCardInput(targetKey);
+        }
+
+        function slideUpCardToPrev() {
+            const currentIndex = cardList.findIndex(item => item.key === currentCardType);
+            questionAndFinalCards[currentCardType].classList.remove('card-slide-down');
+            questionAndFinalCards[currentCardType].classList.add('card-slide-up');
+
+            if (currentIndex === 0) {
+                hideAllQuestionAndFinalCards();
+            } else {
+                const prevItem = cardList[currentIndex - 1];
+                prevItem.elem.classList.remove('card-slide-up');
+                prevItem.elem.classList.add('card-slide-down');
+                currentCardType = prevItem.key;
+                resetCardInput(prevItem.key);
+            }
+        }
+
+        function resetCardInput(cardKey) {
+            switch (cardKey) {
+                case 'question1':
+                    answer1Input.value = '';
+                    error1Tip.classList.remove('show');
+                    break;
+                case 'question2':
+                    answer2Input.value = '';
+                    error2Tip.classList.remove('show');
+                    break;
+                case 'question3':
+                    answer3Input.value = '';
+                    error3Tip.classList.remove('show');
+                    break;
+                case 'final':
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        backBtn.addEventListener('click', () => {
+            if (currentCardType === 'default') {
+                slideDownCard('question1');
+            } else {
+                slideUpCardToPrev();
+            }
+        });
+
+        function showErrorTip(errorTip) {
+            errorTip.classList.add('show');
+            setTimeout(() => {
+                errorTip.classList.remove('show');
+            }, 2000);
+        }
+
+        submit1Btn.addEventListener('click', () => {
+            const answer = answer1Input.value.trim();
+            if (answer === '林慧恩') {
+                slideDownCard('question2');
+            } else {
+                showErrorTip(error1Tip);
+            }
+        });
+
+        submit2Btn.addEventListener('click', () => {
+            const answer = answer2Input.value.trim();
+            if (answer === '56') {
+                slideDownCard('question3');
+            } else {
+                showErrorTip(error2Tip);
+            }
+        });
+
+        submit3Btn.addEventListener('click', () => {
+            const answer = answer3Input.value.trim();
+            if (answer === '2005111121') {
+                slideDownCard('final');
+                // 启动图片A的3秒倒计时
+                startFinal3sHiddenCountdown();
+            } else {
+                showErrorTip(error3Tip);
+            }
+        });
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥再划真爆炸了💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥现在退出来得及💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥现在退出来得及💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥现在退出来得及💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥现在退出来得及💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥现在退出来得及💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥现在退出来得及💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+/* 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥现在退出来得及💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥  */
+
+
+
+
+        const bgm = document.getElementById('bgm');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = true;
+
+
+        function initBgm() {
+
+            bgm.play()
+                .then(() => {
+                    isPlaying = true;
+                    musicBtn.textContent = '🎵'; 
+                    console.log('背景音乐自动播放成功');
+                })
+                .catch(err => {
+
+                    document.addEventListener('click', () => {
+                        bgm.play()
+                            .then(() => {
+                                isPlaying = true;
+                                musicBtn.textContent = '🎵';
+                                console.log('通过页面交互触发背景音乐播放成功');
+                            })
+                            .catch(err => {
+                                console.log('背景音乐播放失败：', err);
+                            });
+                    }, { once: true }); 
+                });
+        }
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+
+                bgm.pause();
+                isPlaying = false;
+                musicBtn.textContent = '🔇';
+            } else {
+
+                bgm.play()
+                    .then(() => {
+                        isPlaying = true;
+                        musicBtn.textContent = '🎵';
+                    })
+                    .catch(err => {
+                        console.log('手动播放失败：', err);
+                    });
+            }
+        });
+
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initBgm();
+        });
+
+
+        function createFireworks() {
+            const container = document.getElementById('fireworkContainer');
+            const fireworkColors = [
+                { c1: '#ffeb3b', c2: '#ff9800' },
+                { c1: '#2196f3', c2: '#9c27b0' },
+                { c1: '#4caf50', c2: '#8bc34a' },
+                { c1: '#ff5722', c2: '#f44336' },
+                { c1: '#e91e63', c2: '#ff6b9d' },
+                { c1: '#ffc107', c2: '#ffeb3b' }
+            ];
+            const maxFireworks = 8;
+            let currentFireworks = 0;
+
+            setInterval(() => {
+                if (currentFireworks < maxFireworks) {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    const top = Math.random() * 100 + '%';
+                    const left = Math.random() * 100 + '%';
+                    const randomColor = fireworkColors[Math.floor(Math.random() * fireworkColors.length)];
+                    firework.style.top = top;
+                    firework.style.left = left;
+                    firework.style.background = `radial-gradient(circle, ${randomColor.c1} 0%, ${randomColor.c2} 100%)`;
+                    firework.style.animationDuration = Math.random() * 2 + 2 + 's';
+                    firework.style.animationDelay = Math.random() * 3 + 's';
+
+                    container.appendChild(firework);
+                    currentFireworks++;
+
+                    setTimeout(() => {
+                        firework.remove();
+                        currentFireworks--;
+                    }, 5000);
+                }
+            }, 800);
+        }
+
+
+        function createPetals() {
+            const container = document.getElementById('petalContainer');
+            const petalColors = ['#ff6b9d', '#ff98b5', '#ffd1dc', '#f8c8dc', '#f5e6f3'];
+            const maxPetals = 40;
+            let currentPetals = 0;
+
+            setInterval(() => {
+                if (currentPetals < maxPetals) {
+                    const petal = document.createElement('div');
+                    petal.className = 'petal';
+                    petal.style.left = Math.random() * 100 + 'vw';
+                    petal.style.top = '-10px';
+                    petal.style.background = `radial-gradient(circle, ${petalColors[Math.floor(Math.random() * petalColors.length)]} 0%, ${petalColors[Math.floor(Math.random() * petalColors.length)]} 100%)`;
+                    petal.style.animationDuration = Math.random() * 6 + 6 + 's';
+                    petal.style.transform = `rotate(${Math.random() * 360}deg) scale(${Math.random() * 0.4 + 0.8})`;
+
+                    container.appendChild(petal);
+                    currentPetals++;
+
+                    setTimeout(() => {
+                        petal.remove();
+                        currentPetals--;
+                    }, 12000);
+                }
+            }, 300);
+        }
+
+
+        hideAllQuestionAndFinalCards();
+        createFireworks();
+        createPetals();
+    </script>
+<!-- 看了别砸电脑了🤪，你知道我的感情的吧，我不会和女生聊天，人又自卑，高富帅我是一样没有😭，主动给你发消息又不知道咋聊，-->
+<!-- 你一找我我又特别高兴，没追过女生，只懂得要好好对人家好点😿，高中没敢和你合影是我最大的遗憾，-->
+<!-- 到现在连见你的勇气都没有了，上次劳动节你邀请我去漫展时，我那会儿老高兴了，虽然我知道你只是出于朋友间的礼貌客套😂，-->
+<!-- 还有国庆那会看到你，又不敢进去，明明就几步的距离，只能说我太懦弱了😄，哈哈。-->
+<!-- 明明我又没那么的了解你，而且又没咋和你接触了，兴趣也和你不同，老感觉你和我距离保持的太好了😣，一决定放弃你了，想和别的女生好好接触一下时，又还是忘不了你，你都成为我的心病了😭，-->
+<!-- 我自己也不懂到底出于什么理由，可能是你在我年轻的时候刚好出现了，是我太在意你了😄，城里人还是太难追了，不过我似乎也没咋行动😣-->
+<!-- 如果可以的话希望你能送我个非常便宜的物质性的东西，便宜摆件挂饰啥的，好让我做个青春纪念😄，-->
+<!-- 虽然你之前送了我好多好吃的，但这些都保存不了，太可惜了😭，当然要是有机会和你补一张合影的话，那我真做梦都笑醒😝。-->
+<!-- 你算我年轻时的白月光了吧，至少大概会记得你一辈子了，高中和你同坐很开心😄，可惜我这年纪不小了😣，马上就快大学毕业了，强扭的瓜不甜，-->
+<!-- 等真的到了你朋友圈官宣了有男朋友的时候，我还是会好好祝福的😤，不过这祝福也仅仅只是给你的。希望你永远幸福快乐😄-->
+<!-- （第一次写文案，我这文笔还是太无敌了，虽然你应该不会看到，毕竟我连文案都藏在源程序里了😭，主要是我这憋着难受😣，所以还是决定偷偷讲了😄 -->
+<!-- 能想到这办法我也是天才了😝，至于你能不能看到也无所谓了，如果万一你看到了，让你尴尬了或者是困扰，还是当作没看见吧😄） -->
+
+</body>
+</html>
